@@ -1,0 +1,134 @@
+
+
+;--------------------------
+;      1_HGW(DSE).ttl      
+;--------------------------
+
+
+;***** 各種設定値 *****
+
+;----- TeraTerm -----
+
+;<window title>
+settitle "Coodinator"
+
+
+;***** メインシーケンス *****
+
+;----- リセット（マクロを連続で実行した時用） -----
+:START_STATE
+
+timeout = 0
+
+sendln "SKRESET"
+wait "OK" "FAIL"
+;（失敗した時はもう一度リセットを行う）
+if result = 2 then
+    goto START_STATE
+endif
+
+;----- フロー制御確認 -----
+timeout = 1
+while 1
+    sendln "RUART"
+    wait "OK 80" "FAIL"
+    if result = 0 then
+        sendln "WUART 80"
+        wait "OK"
+    elseif result = 1 then
+        break
+    elseif result = 2 then
+        continue
+    endif
+endwhile
+timeout = 0
+
+;----- 子機からのPANA接続受け入れを開始 -----
+;------- ネットワーク検出ビーコン -----
+sendln "SKSTART"
+wait "OK"
+if result = 2 then
+    goto ERR1
+endif
+
+;;----- 子機毎にPSK(パスワード)を設定 -----
+;sendln "SKSETHPWD " DEV1MAC " " DEV1PWD
+;wait "OK" "FAIL"
+;if result = 2 then 
+;    goto ERR1
+;endif
+;
+;if NumDev > 1 then
+;    sendln "SKSETHPWD " DEV2MAC " " DEV2PWD
+;    wait "OK" "FAIL"
+;    if result = 2 then 
+;        goto ERR1
+;    endif
+;endif
+
+;----- 5分間持続でイニシャルセットアップモードを開始 -----
+;sendln "SKOPEN 12C"
+;wait "EVENT 56"
+
+;----- 準備完了通知 -----
+;messagebox "HEMS GW側の準備ができました。"#13#10"HAN Device用のTeraTermで「2_Device(DEV).ttl」を実行してください。" "準備完了"
+;;    sendln "SKSENDTO 1 "groupmatchstr3" 0E1A 0 0 0020 ["#34"SleepTime"#34", "#34"3"#34"]"
+
+
+wait "EVENT 01"
+recvln
+;messagebox inputstr 'recvln'
+
+;src = inputstr
+strsplit inputstr " " 4
+;messagebox groupmatchstr1 "groupmatchstr1" ; ''
+;messagebox groupmatchstr2 "groupmatchstr2" ; ''
+;messagebox groupmatchstr3 "groupmatchstr3" ; ''
+;messagebox groupmatchstr4 "groupmatchstr4" ; ''
+
+wait "READY"
+
+
+sendln "SKSENDTO 1 "groupmatchstr3" 0E1A 0 0 0003 ACK"
+while 1
+    wait "REQCONFIG"
+    sendln "SKSENDTO 1 "groupmatchstr3" 0E1A 0 0 0020 ["#34"SleepTime"#$22, "#34"3"#$22]"
+endwhile
+
+
+; ***** エラー処理 *****
+:ERR1
+messagebox "設定値を確認してください。" "設定エラー"
+goto END
+
+:ERR2
+messagebox "PANA接続が完了しませんでした。ID、パスワードなどに誤りがないか確認してください。" "接続エラー"
+goto END
+
+:ERR3
+messagebox "データ送信に失敗しました。" "送信エラー"
+if SendDstSwitch > 1 then
+    messagebox "スマートメータとの通信は続けます。" "送信停止"
+    goto LOOP_SEQUENCE
+elseif SendDstSwitch = 1 then
+    messagebox "スマートメータの状況を確認してください" "動作停止"
+    goto END
+endif
+
+:ERR4
+sendln "SKJOIN " SMIP
+wait "EVENT 25" "EVENT 24"
+if result = 1 then
+    goto LOOP_SEQUENCE
+else
+    messagebox "接続先が見つかりません。接続先の状態を確認してください。" "再接続失敗"
+endif
+goto END
+
+;**********************
+
+;*****
+:END
+end
+;*****
+
