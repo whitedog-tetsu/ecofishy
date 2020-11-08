@@ -38,21 +38,21 @@ void sensor_mode(void)
 
   case COMPUTE_INIT_STATE:
       led_on(PIN_LED_RED);
-//      compute_init_state(op_state);
+      compute_init_state(op_state);
       led_off(PIN_LED_RED);
       break;
 
   case COMPUTE_MEASURE_STATE:
       led_on(PIN_LED_BLU);
-//      compute_measure_state(op_state);
+      compute_measure_state(op_state);
       led_off(PIN_LED_BLU);
       break;
 
 
   case COMPUTE_WAIT_STATE:
       led_on(PIN_LED_GRN);
-//      wait_time = get_compute_wait_time();
-//      delay(wait_time);
+      wait_time = get_compute_wait_time();
+      delay(wait_time);
 //      software_reset();
       set_next_state(COMPUTE_MEASURE_STATE);
       led_off(PIN_LED_GRN);

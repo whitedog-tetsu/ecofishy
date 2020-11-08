@@ -72,7 +72,11 @@ void convert_mac_ipv6(const char* mac_addr, char* ipv6_addr)
  ****************************************************************************/
 RESULT_T BP35A1_reset(char* buf, uint8_t* buf_size)
 {
-    BP35A1_cmd_send(&bp35a1_cmd_set[4], 5000, buf, buf_size);
+    Serial1.println(bp35a1_cmd_set[4].skcmd);
+    Serial1.readStringUntil("\n");
+//    Serial.println(BP35A1_CMD_SKRESET);
+//    Serial.findUntil("OK", "\n");
+//    BP35A1_cmd_send(&bp35a1_cmd_set[4].skcmd, 5000, buf, buf_size);
 }
 
 /*************************************************************************//**
@@ -117,6 +121,7 @@ RESULT_T BP35A1_cmd_send(const BP35A1_CMD_T* cmd, const uint32_t timeout_msec, c
     start_time = millis();
 
     Serial1.println(cmd->skcmd);
+    Serial.println(cmd->skcmd);
     while((millis() - start_time) <= timeout_msec) {
         if (0<Serial1.available()) {
             readbuf[*readbuf_size] = Serial1.read();

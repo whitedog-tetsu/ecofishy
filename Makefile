@@ -109,6 +109,7 @@ INCLUDE += -I$(SRCROOT)
 INCLUDE += -I$(GTESTDIR)
 INCLUDE += -I$(GTEST_ODR_DIR)
 INCLUDE += -I$(GTEST_ROOT)
+INCLUDE += -I$(TESTDIR)
 
 # edit .c files to compile
 #CSRCS   := $(SRCROOT)/system.cpp
@@ -116,9 +117,10 @@ CSRCS   += $(SRCROOT)/main.c
 
 # edit .cpp test files compile
 CXXSRCS := $(SRCROOT)/system.cpp
-CXXSRCS := $(SRCROOT)/LED_lib.cpp
+CXXSRCS += $(SRCROOT)/LED_lib.cpp
 CXXSRCS += $(TESTDIR)/stub_arduino.cpp
 CXXSRCS += $(TESTDIR)/test_system.cpp
+CXXSRCS += $(TESTDIR)/test_led.cpp
 
 CUTOBJLIST := $(SRCROOT)/main.c
 
@@ -209,10 +211,10 @@ all: clean $(TARGETDIR)/$(TARGET)
 all_gtest: clean_gtest gtest
 
 clean:
-	$(CLEANUP) $(GCOVDIR)/* $(OBJROOT)/* $(TARGETDIR)/$(TARGET)
+	$(CLEANUP) $(GCOVDIR)/* $(OBJROOT)/* $(TARGETDIR)/$(TARGET) *.map
 
 clean_gtest:
-	$(CLEANUP) $(OBJROOT)/* $(TESTBINDIR)/$(TESTTARGET)
+	$(CLEANUP) $(OBJROOT)/* $(TESTBINDIR)/$(TESTTARGET) *_googletest.xml
 
 clean_gcov:
 	$(CLEANUP) $(OBJROOT)/* $(GCOVDIR) $(TARGET)_coverage.xml

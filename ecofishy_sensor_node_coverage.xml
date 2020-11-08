@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!DOCTYPE coverage
+  SYSTEM 'http://cobertura.sourceforge.net/xml/coverage-04.dtd'>
+<coverage branch-rate="0.0" branches-covered="0" branches-valid="0" complexity="0.0" line-rate="1.0" lines-covered="2" lines-valid="2" timestamp="1603977682" version="gcovr 3.4">
+<sources>
+<source>.</source>
+</sources>
+<packages>
+<package branch-rate="0.0" complexity="0.0" line-rate="1.0" name="src.ecofishy_arduino_micro">
+<classes>
+<class branch-rate="0.0" complexity="0.0" filename="src/ecofishy_arduino_micro/main.c" line-rate="1.0" name="main_c">
+<methods/>
+<lines>
+<line branch="false" hits="1" number="15"/>
+<line branch="false" hits="1" number="21"/>
+</lines>
+</class>
+</classes>
+</package>
+</packages>
+</coverage>
+

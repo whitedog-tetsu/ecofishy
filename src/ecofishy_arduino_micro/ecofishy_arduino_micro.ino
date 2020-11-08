@@ -17,17 +17,17 @@ void setup() {
   Serial.begin(SERIAL0_BAUD);
 
   Serial1.begin(SERIAL1_BAUD);
-  while (!Serial1) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+//  while (!Serial1) {
+//    ; // wait for serial port to connect. Needed for native USB port only
+//  }
 
 
   // prints title with ending line break
   // setup pins
-  pin_init_setup();
+//  pin_init_setup();
   delay(1000);  
 
-  led_init();
+//  led_init();
   
   init_state(INIT_STATE);
 

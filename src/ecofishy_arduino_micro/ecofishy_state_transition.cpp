@@ -43,9 +43,9 @@ void init_state(OP_STATE_T state)
     BP35A1_reset(readByte, &readByteSize);
     
     // write serial monitor
-//    for (readByteIndex = 0; readByteIndex < (readByteSize+1); readByteIndex++) {
-//        Serial.write(readByte[readByteIndex]);
-//    }
+    for (readByteIndex = 0; readByteIndex < (readByteSize+1); readByteIndex++) {
+        Serial.write(readByte[readByteIndex]);
+    }
 
     delay(WAIT_STARTUP_BP35A1);  // wait for start up BP35A1
 
@@ -164,11 +164,11 @@ void compute_init_state(OP_STATE_T state)
 
     // establish Wi-SUN connection
     
-//    rc = wakeup_bp35a1();
-//    if (rc != OK) {
+    rc = wakeup_bp35a1();
+    if (rc != OK) {
         // write_err_code();
 
-//    }
+    }
 
     // inquire sensor node configuration
     rc = inquire_sensor_node_config();
@@ -177,11 +177,11 @@ void compute_init_state(OP_STATE_T state)
     }
 
     // update sensor node configuration
-//    rc = update_sensor_node_config();
-//    if (rc != OK) {
+    rc = update_sensor_node_config();
+    if (rc != OK) {
         // write_err_code();
 
-//    }
+    }
 
     set_next_state(COMPUTE_MEASURE_STATE);
 
@@ -410,9 +410,8 @@ RESULT_T search_dest_node(char* readByte)
     clear_serial_buf();
     
     // SKSCAN
-    Serial1.print(BP35A1_CMD_SKSCAN);
+    Serial1.print(bp35a1_cmd_set[7].skcmd);
     Serial1.println(" 2 FFFFFFFF 6 0");
-
     str_skscan       = Serial1.readStringUntil('\n'); // SKSCAN
     str_ok           = Serial1.readStringUntil('\n'); // OK
     str_event_20     = Serial1.readStringUntil('\n'); // EVENT20
@@ -439,16 +438,19 @@ RESULT_T search_dest_node(char* readByte)
 
     // channel
     str_channel.toCharArray(buf, str_channel.length()+1);
+    Serial.println(str_channel);
     set_dst_node_channel(&buf[8]);
 
     // channel page
     memset(buf, '\0', sizeof(buf));
     str_channel_page.toCharArray(buf, str_channel_page.length()+1);
+    Serial.println(str_channel_page);
     set_dst_node_channel_page(&buf[13]);
 
     // PAN ID
     memset(buf, '\0', sizeof(buf));
     str_pan_id.toCharArray(buf, str_pan_id.length()+1);
+    Serial.println(str_pan_id);
     set_dst_node_pan_id(&buf[7]);
 
 

@@ -1,27 +1,30 @@
 #include "LED_lib.h"
 #include "arduino_pin_config.h"
+
 #ifndef UNIT_TEST
   #include <Arduino.h>
   #include <pins_arduino.h>
+#else
+  #include "stub_arduino.h"
 #endif // UNIT_TEST
 
 
 void set_led_stat(ARDUINO_PIN_T* pin_info)
 {
-//    analogWrite(pin_info->pin, pin_info->logic);
+    analogWrite(pin_info->pin, pin_info->logic);
 }
 
 void get_led_stat(ARDUINO_PIN_T* pin_info)
 {
-//    pin_info->logic = analogRead(pin_info->pin);
+    pin_info->logic = analogRead(pin_info->pin);
 }
 
 
 void led_init(void)
 {
-//    pinMode(PIN_LED_RED, OUTPUT);
-//    pinMode(PIN_LED_BLU, OUTPUT);
-//    pinMode(PIN_LED_GRN, OUTPUT);
+    pinMode(PIN_LED_RED, OUTPUT);
+    pinMode(PIN_LED_BLU, OUTPUT);
+    pinMode(PIN_LED_GRN, OUTPUT);
 
     led_all_off();
 }
@@ -44,14 +47,12 @@ void led_all_off(void)
 
 void led_on(int led_pin)
 {
-//    analogWrite(led_pin, MAX_LED_PWM);
-//    analogWrite(led_pin, MIN_LED_PWM);
+    analogWrite(led_pin, MIN_LED_PWM);
 }
 
 void led_off(int led_pin)
 {
-//    analogWrite(led_pin, MIN_LED_PWM);
-//    analogWrite(led_pin, MAX_LED_PWM);
+    analogWrite(led_pin, MAX_LED_PWM);
 }
 
 
