@@ -11,19 +11,22 @@
 #define org_analogWrite analogWrite
 #define org_analogRead analogRead
 
-#define org_Serial .print Serial.print
-#define org_Serial .println Serial.println
-#define org_Serial .print Serial.write
+#define org_Serial.print Serial.print
+#define org_Serial.println Serial.println
+#define org_Serial.print Serial.write
 
-#define org_Serial .print Serial1.print
-#define org_Serial .println Serial1.println
-#define org_Serial .print Serial1.write
+#define org_Serial.print Serial1.print
+#define org_Serial.println Serial1.println
+#define org_Serial.print Serial1.write
+
+#define org_delay delay 
 
 //#undef update_sensor_node_config
 #undef digitalRead
 #undef digitalWrite
 #undef analogRead
 #undef analogWrite
+#undef delay
 
 #undef Serial.print
 #undef Serial.println
@@ -32,13 +35,19 @@
 #undef Serial1.println
 #undef Serial1.write
 
+
+void delay(uint32_t val)
+{
+
+}
+
 void pinMode(uint8_t a, uint8_t b)
 {
 }
 
 uint8_t analogRead(uint8_t a)
 {
-  ?　　　　　　　
+  
 }
 
 void analogWrite(uint8_t a, uint8_t b)
@@ -62,7 +71,7 @@ size_t Serial_::print(char c)
 {
   return sizeof(c);
 }
-　
+
 size_t Serial_::print(unsigned char c, int base)
 {
   return sizeof(c);

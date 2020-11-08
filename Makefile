@@ -116,10 +116,11 @@ INCLUDE += -I$(TESTDIR)
 CSRCS   += $(SRCROOT)/main.c
 
 # edit .cpp test files compile
-CXXSRCS := $(SRCROOT)/system.cpp
+#CXXSRCS := $(SRCROOT)/system.cpp
+#CXXSRCS += $(SRCROOT)/ecofishy_state_transition.cpp
 CXXSRCS += $(SRCROOT)/LED_lib.cpp
 CXXSRCS += $(TESTDIR)/stub_arduino.cpp
-CXXSRCS += $(TESTDIR)/test_system.cpp
+#CXXSRCS += $(TESTDIR)/test_system.cpp
 CXXSRCS += $(TESTDIR)/test_led.cpp
 
 CUTOBJLIST := $(SRCROOT)/main.c

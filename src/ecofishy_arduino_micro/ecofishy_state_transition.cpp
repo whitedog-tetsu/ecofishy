@@ -9,7 +9,9 @@
  * 
  ****************************************************************************/
 
-#include <Arduino.h>
+#ifndef UNIT_TEST
+  #include <Arduino.h>
+#endif
 
 #include "ecofishy_state_transition.h"
 #include "AT103_11.h"

@@ -60,6 +60,7 @@ extern void digitalWrite(uint8_t a, uint8_t b);
 extern uint8_t analogRead(uint8_t a);
 extern void analogWrite(uint8_t a, uint8_t b);
 
+extern void delay(uint32_t val);
 
 class Serial_ {
 

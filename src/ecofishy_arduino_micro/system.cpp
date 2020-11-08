@@ -6,6 +6,8 @@
   #include <Arduino_JSON.h>
   #include <avr/wdt.h>
   #include <Arduino.h>
+#else
+  #include "stub_arduino.h"
 #endif // UNIT_TEST
 
 static OP_STATE_T s_op_state = OP_STATE_DEFAULT; 
