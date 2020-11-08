@@ -1,5 +1,6 @@
 #ifndef STUB_ARDUINO_H
 #define STUB_ARDUINO_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -8,8 +9,6 @@ extern "C" {
 
 #include <stdio.h>
 #include <stdint.h>
-
-
 
 
 #define HIGH 0x1
@@ -49,9 +48,6 @@ extern "C" {
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
-
-
-
 
 
 extern void pinMode(uint8_t a, uint8_t b);

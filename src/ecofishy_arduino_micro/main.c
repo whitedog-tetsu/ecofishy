@@ -6,7 +6,7 @@
 #include "ecofishy_state_transition.h"
 #include "BP35A1_lib.h"
 #include "LED_lib.h"
-#include "stub_arduino.h"
+//#include "stub_arduino.h"
 
 #define SERIAL0_BAUD 9600
 #define SERIAL1_BAUD 9600
@@ -14,14 +14,12 @@
 
 int main(void)
 {
-    void setup();
+//    void setup();
 
 
-    void loop();
+//    void loop();
     return 0;
 }
-
-
 
 #if 0
 /*************************************************************************//**
@@ -34,9 +32,9 @@ void setup() {
   Serial.begin(SERIAL0_BAUD);
 
   Serial1.begin(SERIAL1_BAUD);
-  while (!Serial1) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+//  while (!Serial1) {
+//    ; // wait for serial port to connect. Needed for native USB port only
+//  }
 
 
   // prints title with ending line break
@@ -80,6 +78,6 @@ void loop() {
 
 }
 
+#endif
 
-#endif 
 #endif // UNIT_TEST
