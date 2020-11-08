@@ -50,3 +50,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+/unit_test/bin/test_ecofishy_sensor_node

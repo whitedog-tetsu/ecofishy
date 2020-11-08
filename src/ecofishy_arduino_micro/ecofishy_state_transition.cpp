@@ -11,6 +11,9 @@
 
 #ifndef UNIT_TEST
   #include <Arduino.h>
+#else
+  #include "stub_arduino.h"
+  #include <string.h>
 #endif
 
 #include "ecofishy_state_transition.h"

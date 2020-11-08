@@ -15,9 +15,18 @@
 #define org_Serial.println Serial.println
 #define org_Serial.print Serial.write
 
-#define org_Serial.print Serial1.print
-#define org_Serial.println Serial1.println
-#define org_Serial.print Serial1.write
+#define org_Serial1.print Serial1.print
+#define org_Serial1.println Serial1.println
+#define org_Serial1.print Serial1.write
+
+#define org_Serial.readStringUntil Serial.readStringUntil
+#define org_Serial1.readStringUntil Serial1.readStringUntil
+
+#define org_Serial.setTimeout Serial.setTimeout
+#define org_Serial1.setTimeout Serial1.setTimeout
+
+#define org_Serial.find org_Serial.find
+#define org_Serial1.find org_Serial1.find
 
 #define org_delay delay 
 
@@ -34,6 +43,15 @@
 #undef Serial1.print
 #undef Serial1.println
 #undef Serial1.write
+
+#undef Serial.readStringUntil
+#undef Serial1.readStringUntil
+
+#undef Serial.setTimeout
+#undef Serial1.setTimeout
+
+#undef Serial.find
+#undef Serial1.find
 
 
 void delay(uint32_t val)
@@ -177,6 +195,21 @@ uint8_t Serial_::available()
 }
 
 uint8_t Serial_::read()
+{
+  return 0;
+}
+
+String Serial_::readStringUntil(const char [])
+{
+  return 0;
+}
+
+void Serial_::setTimeout(int)
+{
+
+}
+
+int8_t find(const char[])
 {
   return 0;
 }

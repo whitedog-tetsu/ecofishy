@@ -48,7 +48,7 @@ extern "C" {
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
-
+typedef char* String;
 
 extern void pinMode(uint8_t a, uint8_t b);
 extern uint8_t digitalRead(uint8_t a);
@@ -85,6 +85,10 @@ class Serial_ {
     static size_t println(unsigned long, int = DEC);
     static size_t println(double, int = 2);
     static size_t println(void);
+    
+    static String readStringUntil(const char[]);
+    static void   setTimeout(int);
+    static int8_t find(const char[]);
 
     size_t write(uint8_t);
     size_t write(const char *str);
@@ -110,6 +114,7 @@ class Serial_ {
     */
 };
 extern Serial_ Serial;
+extern Serial_ Serial1;
 
 
 #ifdef __cplusplus
