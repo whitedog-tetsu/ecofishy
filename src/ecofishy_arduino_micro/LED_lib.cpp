@@ -45,14 +45,32 @@ void led_all_off(void)
 }
 
 
-void led_on(int led_pin)
+RESULT_T led_on(uint8_t led_pin)
 {
-    analogWrite(led_pin, MIN_LED_PWM);
+    RESULT_T ret = NG;
+
+    if ((PIN_LED_BLU <= led_pin) && (led_pin <= PIN_LED_RED)) {
+       analogWrite(led_pin, MIN_LED_PWM);
+       ret = OK;
+    } else {
+        // do nothing
+    }
+
+    return ret;
 }
 
-void led_off(int led_pin)
+RESULT_T led_off(int led_pin)
 {
-    analogWrite(led_pin, MAX_LED_PWM);
+    RESULT_T ret = NG;
+
+    if ((PIN_LED_BLU <= led_pin) && (led_pin <= PIN_LED_RED)) {
+       analogWrite(led_pin, MAX_LED_PWM);
+       ret = OK;
+    } else {
+        // do nothing
+    }
+
+    return ret;
 }
 
 

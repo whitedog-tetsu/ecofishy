@@ -6,6 +6,7 @@ extern "C" {
 #endif // __cplusplus
 
 #include "arduino_pin_config.h"
+#include "system.h"
 
 #define PIN_LED_BLU (9) 
 #define PIN_LED_GRN (10) 
@@ -23,8 +24,8 @@ extern void led_init(void);
 extern void led_all_on(void);
 extern void led_all_off(void);
 
-extern void led_on(int led_pin);
-extern void led_off(int led_pin);
+extern RESULT_T led_on(uint8_t led_pin);
+extern RESULT_T led_off(int led_pin);
 
 extern void led_brightness(int led_pin, int brightness);
 
