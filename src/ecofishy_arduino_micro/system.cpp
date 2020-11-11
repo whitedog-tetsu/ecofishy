@@ -18,8 +18,8 @@ static uint16_t s_compute_wait_time = (uint16_t)DEFAULT_COMP_WAIT_TIME;
 
 void clear_serial_buf(void)
 {
-//    while(Serial.read() >= 0);
-//    while(Serial1.read() >= 0);
+    while(Serial.read() >= 0);
+    while(Serial1.read() >= 0);
 
 }
 
@@ -201,8 +201,6 @@ RESULT_T inquire_sensor_node_config(void)
 RESULT_T update_sensor_node_config(void)
 {
     RESULT_T result = OK;
-    uint8_t readByteIndex = (uint8_t)0;
-    uint8_t newline_count = (uint8_t)0;
 //    boolean  rc = false;
 //    String   str;
     char     buf[10] = {'\0'};
@@ -224,15 +222,11 @@ RESULT_T update_sensor_node_config(void)
 RESULT_T wakeup_bp35a1(void)
 {
     RESULT_T result = OK;
-    RESULT_T rc = OK;
-    // pinMode(BP35A1_WAKEUP_PIN, LOW);
-    // pinMode(BP35A1_WAKEUP_PIN, HIGH);
-    // pinMode(BP35A1_WAKEUP_PIN, HIGH);
-
-//    rc = check_awaken_bp35a1();
-//    if (rc != OK) {
-//        result = NG;
-//    }
+    RESULT_T rc = NG;
+    rc = check_awaken_bp35a1();
+    if (rc != OK) {
+        result = NG;
+    }
 
     return result;
 
@@ -246,12 +240,11 @@ RESULT_T wakeup_bp35a1(void)
 RESULT_T check_awaken_bp35a1(void)
 {
     RESULT_T result = OK;
-    RESULT_T rc = OK;
+    bool rc = false;
     
-//    Serial1.println("SKINFO");
-//    Serial.println("SKINFO");
-//    rc = wait_char("OK", 1000);
-    if (rc != OK) {
+    Serial1.println("SKINFO");
+    rc = Serial1.find("OK", 2);
+    if (rc == false) {
         result = NG;
     }
 
@@ -300,6 +293,7 @@ void set_compute_wait_time(uint16_t wait_time)
 {
     s_compute_wait_time = wait_time;
 }
+
 
 // get_data
 // set_data

@@ -25,14 +25,15 @@ extern "C" {
 #define MAC_ADDR_READ_BYTE_START_POS (144)
 #define MAC_ADDR_READ_BYTE_END_POS   (MAC_ADDR_READ_BYTE_START_POS + MAC_ADDR_LEN)
 
-#define MAX_CONNECTION_RETRY   (3)
+#define MAX_CONNECTION_RETRY   (0)
 #define WAIT_TIME_INIT_ACK     (3000)  ///< 3000msec
 #define WAIT_TIME_ACK          (1000)  ///< 1000msec
 
 #define DEFAULT_COMP_WAIT_TIME (1000)
 
 typedef struct measure_temper_t {
-    int16_t temper_degc;
+    int16_t temper_degc1;
+    int16_t temper_degc2;
 } MEASURE_TEMPER_T;
 
 

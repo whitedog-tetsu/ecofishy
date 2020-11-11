@@ -49,6 +49,25 @@ typedef enum op_mode_t {
    DEFAULT_MODE = 0xFF
 } OP_MODE_T;
 
+typedef struct data_temperature16_t {
+    uint16_t src1;
+    uint16_t src2;
+    uint16_t src3;
+} DATA_TEMPERATURE16_T;
+
+typedef struct data_temperature32_t {
+    int32_t src1;
+    int32_t src2;
+    int32_t src3;
+} DATA_TEMPERATURE32_T;
+
+typedef struct data_temperature32f_t {
+    double src1;
+    double src2;
+    double src3;
+} DATA_TEMPERATURE32F_T;
+
+
 extern void sensor_mode(void);
 extern void host_mode(void);
 

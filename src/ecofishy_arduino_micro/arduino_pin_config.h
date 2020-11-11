@@ -13,13 +13,13 @@ extern "C" {
   #define PIN_LED_RED (11)
 #endif // LED_LIB_H
 
-#ifndef Arduino_h
-  #define PIN_A0 0
-  #define PIN_A1 1
-  #define PIN_A2 2
-  #define PIN_A3 3
-  #define PIN_A4 4
-  #define PIN_A5 5
+#if !defined(Arduino_h) && defined(UNIT_TEST)
+  #define PIN_A0 14
+  #define PIN_A1 15
+  #define PIN_A2 16
+  #define PIN_A3 17
+  #define PIN_A4 18
+  #define PIN_A5 19
   #define A0 PIN_A0
   #define A1 PIN_A1
   #define A2 PIN_A2

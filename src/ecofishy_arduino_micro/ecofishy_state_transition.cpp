@@ -13,7 +13,11 @@
   #include <Arduino.h>
 #else
   #include "stub_arduino.h"
+  #include "stub_WString.h"
   #include <string.h>
+  #include <iostream>
+  #include <string>
+  #include <stdio.h>
 #endif
 
 #include "ecofishy_state_transition.h"
@@ -168,11 +172,9 @@ void compute_init_state(OP_STATE_T state)
     
 
     // establish Wi-SUN connection
-    
     rc = wakeup_bp35a1();
     if (rc != OK) {
         // write_err_code();
-
     }
 
     // inquire sensor node configuration
@@ -252,7 +254,7 @@ void send_ready(void)
  ****************************************************************************/
 void compute_measure_state(const OP_STATE_T state)
 {
-    MEASURE_TEMPER_T data = {0};
+    MEASURE_TEMPER_T data = {0,0};
     PACKET_T packet = {{'\0'}, (uint8_t)0};
     char temper[5] = {'\0'};
     char payload[PAYLOAD_LEN] = {'\0'};
@@ -270,7 +272,11 @@ void compute_measure_state(const OP_STATE_T state)
     // data alignment
     sprintf(payload, "%X", seq_num);
     strcat(payload, DELIM_SPACE);
-    sprintf(temper, "%d", data.temper_degc);
+    sprintf(temper, "%d", data.temper_degc1);
+    strcat(payload, temper);
+    memset(temper, '\0', sizeof(temper));
+    sprintf(temper, "%d", data.temper_degc2);
+    strcat(payload, DELIM_SPACE);
     strcat(payload, temper);
 
     // make payload data
@@ -293,35 +299,41 @@ void compute_measure_state(const OP_STATE_T state)
  ****************************************************************************/
 void compute_measure_temperature(MEASURE_TEMPER_T* data)
 {
-    uint16_t data_temper[MAX_DATA_TEMPER_SIZE] = {0};  // read data buffer
+    DATA_TEMPERATURE16_T data_temper[MAX_DATA_TEMPER_SIZE] = {0,};  // read data buffer
+    DATA_TEMPERATURE32_T  sum_temper = {0,0,0};   // sum of temperature
+    DATA_TEMPERATURE16_T ave_temper = {0,0,0};  // averaged temperature 
+    DATA_TEMPERATURE32F_T degc       = {0.0, 0.0, 0.0};  // degree celcius
     uint8_t  index      = (uint8_t)0;   // loop variable
-    int32_t  sum_temper = (int32_t)0;   // sum of temperature
-    uint16_t ave_temper = (uint16_t)0;  // averaged temperature 
-    double   degc       = (double)0.0;  // degree celcius
     
     
     // sampling
     for (index = (uint8_t)0; index < (uint8_t)MAX_DATA_TEMPER_SIZE; index++) {
-        data_temper[index] = analogRead(A0);
+        data_temper[index].src1 = analogRead(A0);
+        data_temper[index].src2 = analogRead(A1);
     } 
 
     // calculate
 
     // sum
     for (index = (uint8_t)0; index < (uint8_t)SUM_DATA_TEMPER_SIZE; index++) {
-        sum_temper += (int32_t)data_temper[index];
+        sum_temper.src1 += (int32_t)data_temper[index].src1;
+        sum_temper.src2 += (int32_t)data_temper[index].src2;
     }
 
     // divide
-    round_temper_data(&sum_temper, (int32_t)ROUND_DATA_TEMPER_DIGIT);
+    round_temper_data(&sum_temper.src1, (int32_t)ROUND_DATA_TEMPER_DIGIT);
+    round_temper_data(&sum_temper.src2, (int32_t)ROUND_DATA_TEMPER_DIGIT);
 
-    ave_temper = (uint16_t)(sum_temper / (uint32_t)AVERAGE_DATA_TEMPER_SIZE);
+    ave_temper.src1 = (uint16_t)(sum_temper.src1 / (uint32_t)AVERAGE_DATA_TEMPER_SIZE);
+    ave_temper.src2 = (uint16_t)(sum_temper.src2 / (uint32_t)AVERAGE_DATA_TEMPER_SIZE);
 
     // convert
-    convert_analog2degc(&ave_temper, &degc);
+    convert_analog2degc(&ave_temper.src1, &degc.src1);
+    convert_analog2degc(&ave_temper.src2, &degc.src2);
 
     // fixed point value
-    data->temper_degc = (int16_t)(degc * (int16_t)100);
+    data->temper_degc1 = (int16_t)(degc.src1 * (int16_t)100);
+    data->temper_degc2 = (int16_t)(degc.src2 * (int16_t)100);
 }
 
 /*************************************************************************//**

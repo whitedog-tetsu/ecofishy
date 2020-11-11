@@ -4,8 +4,10 @@
 #include "BP35A1_lib.h"
 #include "LED_lib.h"
 
+
 #define SERIAL0_BAUD 9600
 #define SERIAL1_BAUD 9600
+
 
 /*************************************************************************//**
  * @brief initilizem
@@ -13,6 +15,8 @@
  ****************************************************************************/
 void setup() {
 
+  bool rc = true;
+  long baud_rate = 0;
   // put your setup code here, to run once:
   Serial.begin(SERIAL0_BAUD);
 
@@ -24,7 +28,7 @@ void setup() {
 
   // prints title with ending line break
   // setup pins
-//  pin_init_setup();
+  pin_init_setup();
   delay(1000);  
 
 //  led_init();
@@ -62,4 +66,5 @@ void loop() {
   }
 
 }
+
 
