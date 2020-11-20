@@ -53,10 +53,13 @@ void sensor_mode(void)
 
   case COMPUTE_WAIT_STATE:
       led_on(PIN_LED_GRN);
-      wait_time = get_compute_wait_time();
-      delay(wait_time);
-//      software_reset();
       set_next_state(COMPUTE_MEASURE_STATE);
+      wait_time = get_compute_wait_time();
+      if (sleep_bp35a1() == OK) {
+          Serial.println("Sleeping");
+      }
+      delay(wait_time);
+      wakeup_bp35a1();
       led_off(PIN_LED_GRN);
       break;
 
@@ -221,17 +224,41 @@ RESULT_T update_sensor_node_config(void)
  ****************************************************************************/
 RESULT_T wakeup_bp35a1(void)
 {
+    RESULT_T result = NG;
+    RESULT_T rc = NG;
+    
+    while(1) {
+        pinMode(PIN_BP35A1_WKUP, OUTPUT);
+        digitalWrite(PIN_BP35A1_WKUP, LOW);
+        delay(10);
+        digitalWrite(PIN_BP35A1_WKUP, HIGH);
+        rc = check_awaken_bp35a1();
+        if (rc != NG) {
+            Serial.println("BP35A1 woke up");
+            result = OK;
+            break;
+        }
+
+    }
+
+    return result;
+}
+
+RESULT_T sleep_bp35a1(void)
+{
     RESULT_T result = OK;
     RESULT_T rc = NG;
+    
+    digitalWrite(PIN_BP35A1_WKUP, LOW);
+    Serial1.println("SKDSLEEP");
     rc = check_awaken_bp35a1();
-    if (rc != OK) {
+    if (rc != NG) {
         result = NG;
     }
 
     return result;
 
 }
-
 /*************************************************************************//**
  * @brief 
  * 
@@ -279,9 +306,9 @@ void init_sequence_num(void)
 
 void software_reset(void)
 {
-//    wdt_disable();
-//    wdt_enable(WDTO_1S);
-    while (1) {}
+    wdt_disable();
+    wdt_enable(WDTO_1S);
+//    while (1) {}
 }
 
 uint16_t get_compute_wait_time(void)

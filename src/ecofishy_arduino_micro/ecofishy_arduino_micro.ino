@@ -8,7 +8,19 @@
 #define SERIAL0_BAUD 9600
 #define SERIAL1_BAUD 9600
 
-
+long detect_serial_baud_rate(void);
+long baud_rate_set[] = {
+  115200,
+  57600,
+  38400,
+  28800,
+  19200,
+  14400,
+  9600,
+  4800,
+  2400,
+  1200
+};
 /*************************************************************************//**
  * @brief initilizem
  * 
@@ -20,6 +32,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(SERIAL0_BAUD);
 
+//  baud_rate = detect_serial_baud_rate();
   Serial1.begin(SERIAL1_BAUD);
 //  while (!Serial1) {
 //    ; // wait for serial port to connect. Needed for native USB port only
@@ -68,3 +81,25 @@ void loop() {
 }
 
 
+long detect_serial_baud_rate(void)
+{
+    uint8_t baud_rate_index = 0;
+    bool rc = false;
+    long ret = 115200;
+
+    for (baud_rate_index = 0; baud_rate_index < sizeof(baud_rate_set)/sizeof(long); baud_rate_index++) {
+        Serial1.begin(baud_rate_set[baud_rate_index]);
+        Serial.println(baud_rate_set[baud_rate_index]);
+        delay(1000);
+        Serial1.println("SKINFO");
+        rc = Serial1.find("OK", 2);
+        if (rc == true) {
+           ret = baud_rate_set[baud_rate_index];
+           break;
+        }
+        clear_serial_buf();
+//        Serial1.end();
+    }
+
+    return ret;
+}

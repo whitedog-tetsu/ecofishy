@@ -83,6 +83,8 @@ extern RESULT_T wakeup_bp35a1(void);
 extern RESULT_T check_awaken_bp35a1(void);
 extern RESULT_T inquire_sensor_node_config(void);
 extern RESULT_T update_sensor_node_config(void);
+extern RESULT_T sleep_bp35a1(void);
+
 
 extern void set_err_bit(const uint8_t err_bit);
 extern uint8_t get_err_bit(const uint8_t err_bit);

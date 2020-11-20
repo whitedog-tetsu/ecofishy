@@ -172,11 +172,11 @@ void compute_init_state(OP_STATE_T state)
     
 
     // establish Wi-SUN connection
-    rc = wakeup_bp35a1();
-    if (rc != OK) {
-        // write_err_code();
-    }
-
+//    rc = wakeup_bp35a1();
+//    if (rc != OK) {
+//        // write_err_code();
+//    }
+//
     // inquire sensor node configuration
     rc = inquire_sensor_node_config();
     if (rc != OK) {
@@ -254,9 +254,9 @@ void send_ready(void)
  ****************************************************************************/
 void compute_measure_state(const OP_STATE_T state)
 {
-    MEASURE_TEMPER_T data = {0,0};
+    MEASURE_TEMPER_T data = {0.0, 0.0};
     PACKET_T packet = {{'\0'}, (uint8_t)0};
-    char temper[5] = {'\0'};
+    char temper[6] = {'\0'};
     char payload[PAYLOAD_LEN] = {'\0'};
     uint8_t seq_num = (uint8_t)0;
     
@@ -272,10 +272,10 @@ void compute_measure_state(const OP_STATE_T state)
     // data alignment
     sprintf(payload, "%X", seq_num);
     strcat(payload, DELIM_SPACE);
-    sprintf(temper, "%d", data.temper_degc1);
+    dtostrf(data.temper_degc1, 5, 2, temper);
     strcat(payload, temper);
     memset(temper, '\0', sizeof(temper));
-    sprintf(temper, "%d", data.temper_degc2);
+    dtostrf(data.temper_degc2, 5, 2, temper);
     strcat(payload, DELIM_SPACE);
     strcat(payload, temper);
 
@@ -300,9 +300,9 @@ void compute_measure_state(const OP_STATE_T state)
 void compute_measure_temperature(MEASURE_TEMPER_T* data)
 {
     DATA_TEMPERATURE16_T data_temper[MAX_DATA_TEMPER_SIZE] = {0,};  // read data buffer
-    DATA_TEMPERATURE32_T  sum_temper = {0,0,0};   // sum of temperature
+    DATA_TEMPERATURE32_T sum_temper = {0,0,0};  // sum of temperature
     DATA_TEMPERATURE16_T ave_temper = {0,0,0};  // averaged temperature 
-    DATA_TEMPERATURE32F_T degc       = {0.0, 0.0, 0.0};  // degree celcius
+    DATA_TEMPERATURE32F_T degc      = {0.0, 0.0, 0.0};  // degree celcius
     uint8_t  index      = (uint8_t)0;   // loop variable
     
     
@@ -328,12 +328,12 @@ void compute_measure_temperature(MEASURE_TEMPER_T* data)
     ave_temper.src2 = (uint16_t)(sum_temper.src2 / (uint32_t)AVERAGE_DATA_TEMPER_SIZE);
 
     // convert
-    convert_analog2degc(&ave_temper.src1, &degc.src1);
-    convert_analog2degc(&ave_temper.src2, &degc.src2);
+    convert_analog2degc(&ave_temper.src1, &data->temper_degc1);
+    convert_analog2degc(&ave_temper.src2, &data->temper_degc2);
 
     // fixed point value
-    data->temper_degc1 = (int16_t)(degc.src1 * (int16_t)100);
-    data->temper_degc2 = (int16_t)(degc.src2 * (int16_t)100);
+//    data->temper_degc1 = (int16_t)(degc.src1 * (int16_t)100);
+//    data->temper_degc2 = (int16_t)(degc.src2 * (int16_t)100);
 }
 
 /*************************************************************************//**
@@ -440,7 +440,7 @@ RESULT_T search_dest_node(char* readByte)
     str_lqi          = Serial1.readStringUntil('\n'); // LQI
     str_side         = Serial1.readStringUntil('\n'); // Side
     str_pair_id      = Serial1.readStringUntil('\n'); // Pair ID
-    Serial1.setTimeout(20000);
+    Serial1.setTimeout(WAIT_TIME_EVENT22);
     str_event_22 = Serial1.readStringUntil('\n');     // EVENT22
     
     // erase white space

@@ -21,6 +21,6 @@
  ****************************************************************************/
 void convert_analog2degc(uint16_t* analog, double* temp_degc)
 {
-    *temp_degc = (THERM_103AT_B_PARAM / (log((double)*analog / ((double)ADC_RESOLUTION - (double)*analog)) + 
+    *temp_degc = (double)(THERM_103AT_B_PARAM / (log((double)*analog / ((double)ADC_RESOLUTION - (double)*analog)) + 
                  (THERM_103AT_B_PARAM / THERM_KELVIN_OF_25DEGC))) + THERM_DEGC_OF_ABS_ZERO;
 }

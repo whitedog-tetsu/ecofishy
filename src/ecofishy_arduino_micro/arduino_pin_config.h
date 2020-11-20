@@ -27,6 +27,17 @@ extern "C" {
   #define A4 PIN_A4
   #define A5 PIN_A5
 #endif // Arduino_h
+
+#define PIN_UART_TX 0
+#define PIN_UART_RX 1
+#define PIN_BP35A1_WKUP  4
+#define PIN_BP35A1_RESET 5
+#define PIN_SPI_MISO 14
+#define PIN_SPI_SCLK 15
+#define PIN_SPI_MOSI 16
+#define PIN_SPI_SS   17
+
+
 typedef struct arduino_pin_t {
     int pin;
     int io;

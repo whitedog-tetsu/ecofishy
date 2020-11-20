@@ -29,11 +29,11 @@ extern "C" {
 #define WAIT_TIME_INIT_ACK     (3000)  ///< 3000msec
 #define WAIT_TIME_ACK          (1000)  ///< 1000msec
 
-#define DEFAULT_COMP_WAIT_TIME (1000)
+#define DEFAULT_COMP_WAIT_TIME (3000)
 
 typedef struct measure_temper_t {
-    int16_t temper_degc1;
-    int16_t temper_degc2;
+    double temper_degc1;
+    double temper_degc2;
 } MEASURE_TEMPER_T;
 
 
