@@ -73,19 +73,50 @@ RESULT_T led_off(int led_pin)
     return ret;
 }
 
+/*************************************************************************//**
+ * @brief 
+ *        ledのピンは9, 10, 11の値のみ正常動作する
+ * 　　　　それ以外は異常の入力値。
+ * 
+ * 　　　　明るさは0~255までの範囲を正常動作。
+ * 　　　　負数は異常とする。
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @param led_pin 
+ * @param brightness
+ * @return RESULT_T
+ * 
+ ****************************************************************************/
+RESULT_T led_brightness(int led_pin, int brightness)
+{    
+    RESULT_T result = NG;
 
-void led_brightness(int led_pin, int brightness)
+    // pin
+    if ((9<=led_pin) && (led_pin <=11)) {
+        // brightness
+        if ((0<=brightness) && (brightness <=255)) {
+            result = OK;
+        } else {
+            // do nothing
+        }
+    } else {
+        // do nothing
+    }
+    
+    return result;
+}
+
+
+RESULT_T led_blink_msec(int  led_pin, int  pulse_msec)
 {
     
 }
 
-
-void led_blink_msec(int  led_pin, int  pulse_msec, int init_led_stat)
-{
-    
-}
-
-void led_blink_usec(int  led_pin, int  pulse_usec, int init_led_stat)
+RESULT_T led_blink_usec(int  led_pin, int  pulse_usec)
 {
     
 }

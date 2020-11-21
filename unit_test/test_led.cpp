@@ -73,3 +73,122 @@ TEST_F(LED_lib, led_off_NG2)
 {   
     EXPECT_EQ(NG, led_off(12));
 }
+
+/*************************************************************************//**
+ * @brief Construct a new test f object
+ * 
+ *         input   output   
+ * pin     9        OK    must
+ * pin     10       OK    OK/NGの境界でテストを実施しているので、実施なくてもよい。
+ * pin     11       OK    must
+ * pin     8        NG    must
+ * pin     12       NG    must
+ * 
+ * brt     0        OK    must
+ * brt     128      OK    must
+ * brt     255      OK    must
+ * brt     -1       NG    must
+ * brt     256      NG    must
+ *         
+ *               pin   brt
+ * pattern1      OK    OK   must
+ * pattern2      NG    OK   must
+ * pattern3      OK    NG   must
+ * pattern4      NG    NG   これはどちらが原因でNGになったか分からないので、実施しない。
+ * 
+ *  pin
+ * 1 led_brightness(9 , 0)   OK/OK -> OK
+ * 2 led_brightness(11 , 0)  OK/OK -> OK
+ * 3 led_brightness(8 , 0)   NG/OK -> NG
+ * 4 led_brightness(12 , 0)  NG/OK -> NG
+ * 
+ * 5 led_brightness(9 , 255)   OK/OK -> OK
+ * 6 led_brightness(11 , 255)  OK/OK -> OK
+ * 7 led_brightness(8 , 255)   NG/OK -> NG
+ * 8 led_brightness(12 , 255)  NG/OK -> NG
+ * 
+ * 
+ * 
+ *  brt 
+ * 9  led_brightness(9 , 255)  OK/OK -> OK
+ * 10 led_brightness(9 , 128)  OK/OK -> OK
+ * 11 led_brightness(9 , -1)   OK/NG -> NG
+ * 12 led_brightness(9 , 256)  OK/NG -> NG
+ * 
+ * 13 led_brightness(11 , 255)  OK/OK -> OK
+ * 14 led_brightness(11 , 128)  OK/OK -> OK
+ * 15 led_brightness(11 , -1)   OK/NG -> NG
+ * 16 led_brightness(11 , 256)  OK/NG -> NG
+ * 
+ * 
+ * 
+ ****************************************************************************/
+
+TEST_F(LED_lib, led_brightness_pin1)
+{   
+    EXPECT_EQ(OK, led_brightness(9 , 0));
+}
+
+TEST_F(LED_lib, led_brightness_pin2)
+{   
+    EXPECT_EQ(OK, led_brightness(11 , 0));
+}
+TEST_F(LED_lib, led_brightness_pin3)
+{   
+    EXPECT_EQ(NG, led_brightness(8 , 0));
+}
+TEST_F(LED_lib, led_brightness_pin4)
+{   
+    EXPECT_EQ(NG, led_brightness(12 , 0));
+}
+TEST_F(LED_lib, led_brightness_pin5)
+{   
+    EXPECT_EQ(OK, led_brightness(9 , 255));
+}
+TEST_F(LED_lib, led_brightness_pin6)
+{   
+    EXPECT_EQ(OK, led_brightness(9 , 255));
+}
+TEST_F(LED_lib, led_brightness_pin7)
+{   
+    EXPECT_EQ(NG, led_brightness(9 , -1));
+}
+TEST_F(LED_lib, led_brightness_pin8)
+{   
+    EXPECT_EQ(NG, led_brightness(9 , 256));
+}
+
+
+TEST_F(LED_lib, led_brightness_pin9)
+{   
+    EXPECT_EQ(OK, led_brightness(9 , 255));
+}
+
+TEST_F(LED_lib, led_brightness_pin10)
+{   
+    EXPECT_EQ(OK, led_brightness(11 , 255));
+}
+TEST_F(LED_lib, led_brightness_pin11)
+{   
+    EXPECT_EQ(NG, led_brightness(8 , 255));
+}
+TEST_F(LED_lib, led_brightness_pin12)
+{   
+    EXPECT_EQ(NG, led_brightness(12 , 255));
+}
+TEST_F(LED_lib, led_brightness_pin13)
+{   
+    EXPECT_EQ(OK, led_brightness(11 , 255));
+}
+TEST_F(LED_lib, led_brightness_pin14)
+{   
+    EXPECT_EQ(OK, led_brightness(11 , 255));
+}
+TEST_F(LED_lib, led_brightness_pin15)
+{   
+    EXPECT_EQ(NG, led_brightness(11 , -1));
+}
+TEST_F(LED_lib, led_brightness_pin16)
+{   
+    EXPECT_EQ(NG, led_brightness(11 , 256));
+}

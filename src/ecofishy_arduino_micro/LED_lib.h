@@ -27,10 +27,10 @@ extern void led_all_off(void);
 extern RESULT_T led_on(uint8_t led_pin);
 extern RESULT_T led_off(int led_pin);
 
-extern void led_brightness(int led_pin, int brightness);
+extern RESULT_T led_brightness(int led_pin, int brightness);
 
-extern void led_blink_msec(int  led_pin, int  pulse_msec, int init_led_stat);
-extern void led_blink_usec(int  led_pin, int  pulse_usec, int init_led_stat);
+extern RESULT_T led_blink_msec(int  led_pin, int  pulse_msec);
+extern RESULT_T led_blink_usec(int  led_pin, int  pulse_usec);
 
 extern void set_led_color(int color);
 extern void get_led_color(int color);
