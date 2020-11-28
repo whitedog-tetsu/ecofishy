@@ -43,7 +43,9 @@ void init_state(OP_STATE_T state)
 
     // set last state
     set_last_state(state);
-
+    
+    // set compute wait time
+    set_compute_wait_time(1000);
     
     // clear serial buffer
     clear_serial_buf();
@@ -187,7 +189,6 @@ void compute_init_state(OP_STATE_T state)
     rc = update_sensor_node_config();
     if (rc != OK) {
         // write_err_code();
-
     }
 
     set_next_state(COMPUTE_MEASURE_STATE);
@@ -349,7 +350,6 @@ RESULT_T start_compute_measure_state(void)
     rc = wakeup_bp35a1();
     if (rc != OK) {
         // write_err_code();
-
     }
 
     // inquire sensor node configuration
@@ -362,7 +362,6 @@ RESULT_T start_compute_measure_state(void)
     rc = update_sensor_node_config();
     if (rc != OK) {
         // write_err_code();
-
     }
 
     return result;
@@ -470,7 +469,6 @@ RESULT_T search_dest_node(char* readByte)
     Serial.println(str_pan_id);
     set_dst_node_pan_id(&buf[7]);
 
-
     // MAC address
     memset(buf, '\0', sizeof(buf));
     str_mac_addr.toCharArray(buf, str_mac_addr.length()+1);
@@ -485,7 +483,8 @@ RESULT_T search_dest_node(char* readByte)
     memset(buf, '\0', sizeof(buf));
     str_side.toCharArray(buf, str_side.length()+1);
     set_dst_node_side(&buf[5]);
-
+    
+    // pair_id
     memset(buf, '\0', sizeof(buf));
     str_pair_id.toCharArray(buf, str_pair_id.length()+1);
     set_dst_node_pair_id(&buf[7]);

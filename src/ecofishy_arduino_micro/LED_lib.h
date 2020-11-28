@@ -13,8 +13,10 @@ extern "C" {
 #define PIN_LED_RED (11)
 
 #define MAX_LED_PWM (255)
-#define MIN_LED_PWM (254)
+#define MIN_LED_PWM (0)
 
+#define MAX_LED_BRIGHTNESS (254)
+#define MIN_LED_BRIGHTNESS (MAX_LED_PWM)
 
 extern void set_led_stat(ARDUINO_PIN_T* pin_info);
 extern void get_led_stat(ARDUINO_PIN_T* pin_info);

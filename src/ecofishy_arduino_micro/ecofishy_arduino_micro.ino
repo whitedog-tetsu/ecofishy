@@ -1,3 +1,4 @@
+#include <Arduino_JSON.h>
 #include "arduino_pin_config.h"
 #include "system.h"
 #include "ecofishy_state_transition.h"
@@ -9,6 +10,7 @@
 #define SERIAL1_BAUD 9600
 
 long detect_serial_baud_rate(void);
+
 long baud_rate_set[] = {
   115200,
   57600,
@@ -21,6 +23,10 @@ long baud_rate_set[] = {
   2400,
   1200
 };
+
+const char g_config[] = "{\"COMPUTE_WAIT_TIME\":1000, \"OP_MODE\":1}";
+
+
 /*************************************************************************//**
  * @brief initilizem
  * 
@@ -38,11 +44,12 @@ void setup() {
 //    ; // wait for serial port to connect. Needed for native USB port only
 //  }
 
-
   // prints title with ending line break
   // setup pins
-  pin_init_setup();
-  delay(1000);  
+//  pin_init_setup();
+  delay(2000);
+
+  ecofishy_config_parse(g_config);
 
 //  led_init();
   
@@ -61,7 +68,7 @@ void loop() {
   OP_MODE_T op_mode = DEFAULT_MODE;
 
   // get operate mode
-  op_mode = SENSOR_MODE;
+  get_compute_op_mode(&op_mode);
 
   // host mode
   switch (op_mode) {

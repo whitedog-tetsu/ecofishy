@@ -50,7 +50,7 @@ RESULT_T led_on(uint8_t led_pin)
     RESULT_T ret = NG;
 
     if ((PIN_LED_BLU <= led_pin) && (led_pin <= PIN_LED_RED)) {
-       analogWrite(led_pin, MIN_LED_PWM);
+       analogWrite(led_pin, MAX_LED_BRIGHTNESS);
        ret = OK;
     } else {
         // do nothing
@@ -75,11 +75,11 @@ RESULT_T led_off(int led_pin)
 
 /*************************************************************************//**
  * @brief 
- *        ledのピンは9, 10, 11の値のみ正常動作する
- * 　　　　それ以外は異常の入力値。
+ *        ledのピンは9, 10, 11の値のみ正常動作す�?
+ * 　　　　それ以外�?�異常の入力値�?
  * 
- * 　　　　明るさは0~255までの範囲を正常動作。
- * 　　　　負数は異常とする。
+ * 　　　　明るさ�?�0~255までの�?囲を正常動作�?
+ * 　　　　�?数は異常とする�?
  * 
  * 
  * 
@@ -96,9 +96,10 @@ RESULT_T led_brightness(int led_pin, int brightness)
     RESULT_T result = NG;
 
     // pin
-    if ((9<=led_pin) && (led_pin <=11)) {
+    if ((PIN_LED_BLU <= led_pin) && (led_pin <= PIN_LED_RED)) {
         // brightness
-        if ((0<=brightness) && (brightness <=255)) {
+        if ((MIN_LED_PWM <= brightness) && (brightness <= MAX_LED_PWM)) {
+            analogWrite(led_pin, brightness);
             result = OK;
         } else {
             // do nothing

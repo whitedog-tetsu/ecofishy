@@ -26,9 +26,9 @@ static const ARDUINO_PIN_T s_init_pin_conf[] = {
     {(uint8_t)PIN_UART_RX,      (uint8_t)INPUT_PULLUP, (uint8_t)NULL},  // RX of BP35A1
     {(uint8_t)PIN_BP35A1_WKUP,  (uint8_t)OUTPUT,       (uint8_t)HIGH},  // BP35A1 WKUP
     {(uint8_t)PIN_BP35A1_RESET, (uint8_t)INPUT_PULLUP, (uint8_t)NULL},  // BP35A1 RESET
-    {(uint8_t)PIN_LED_RED,      (uint8_t)OUTPUT,       (uint8_t)NULL},  // LED R
-    {(uint8_t)PIN_LED_BLU,      (uint8_t)OUTPUT,       (uint8_t)NULL},  // LED G
-    {(uint8_t)PIN_LED_GRN,      (uint8_t)OUTPUT,       (uint8_t)NULL},  // LED B
+    {(uint8_t)PIN_LED_RED,      (uint8_t)OUTPUT,       (uint8_t)255},  // LED R
+    {(uint8_t)PIN_LED_BLU,      (uint8_t)OUTPUT,       (uint8_t)255},  // LED G
+    {(uint8_t)PIN_LED_GRN,      (uint8_t)OUTPUT,       (uint8_t)255},  // LED B
     {(uint8_t)PIN_SPI_MISO,     (uint8_t)INPUT_PULLUP, (uint8_t)NULL},  // MISO
     {(uint8_t)PIN_SPI_SCLK,     (uint8_t)INPUT_PULLUP, (uint8_t)NULL},  // SCLK
     {(uint8_t)PIN_SPI_MOSI,     (uint8_t)INPUT_PULLUP, (uint8_t)NULL},  // MOSI
@@ -44,10 +44,8 @@ void pin_init_setup(void)
 {
     uint8_t index = (uint8_t)0;
     
-    for (index = (uint8_t)0; index < (uint8_t)(sizeof(s_init_pin_conf)/sizeof(ARDUINO_PIN_T)); index++) {
-        
+    for (index = (uint8_t)0; index < (uint8_t)(sizeof(s_init_pin_conf)/sizeof(ARDUINO_PIN_T)); index++) {   
         switch (s_init_pin_conf[index].io) {
-
         case INPUT:
             digitalWrite(s_init_pin_conf[index].pin, s_init_pin_conf[index].logic);
             break;
@@ -62,7 +60,6 @@ void pin_init_setup(void)
         default:
             pinMode(s_init_pin_conf[index].pin, s_init_pin_conf[index].io);
             break;
-        
         }
 
     }

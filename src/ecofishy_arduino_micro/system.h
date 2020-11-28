@@ -7,7 +7,6 @@ extern "C" {
 
 #include <stdint.h>
 
-
 /**
  <bit>
 
@@ -21,6 +20,8 @@ extern "C" {
 
 #define MAX_NUM_OF_DEVICE    (5)
 
+#define STR_COMPUTE_WAIT_TIME "COMPUTE_WAIT_TIME"
+#define STR_OP_MODE "OP_MODE"
 
 
 typedef enum result_t {
@@ -36,18 +37,34 @@ typedef enum op_state_t {
     OP_STATE_DEFAULT      = 0xFF  ///< default state value
 } OP_STATE_T;
 
-typedef struct node_config_t {
-   uint16_t wait_time[MAX_NUM_OF_DEVICE];
-   uint8_t  power_mode[MAX_NUM_OF_DEVICE];
-   uint8_t  sensor_mode[MAX_NUM_OF_DEVICE];
-   uint8_t  device_handle;
-} NODE_CONFIG_T;
 
 typedef enum op_mode_t {
    HOST_MODE    = 0x00,
    SENSOR_MODE  = 0x01,
    DEFAULT_MODE = 0xFF
 } OP_MODE_T;
+
+
+/*************************************************************************//**
+ * @brief 
+ *               bit 7 6 5 4 3 2 1 0
+ *   TEMPERATURE     r r r r 0 0 0 0    num of temperature sensor
+ *   Humidity
+ * 
+ ****************************************************************************/
+typedef struct NODE_TYPE_T {
+    uint8_t temperature_sensor;
+    uint8_t ph_sensor;
+    uint8_t salt_sensor;
+} NODE_TYPE_T;
+
+typedef struct node_config_t {
+   NODE_TYPE_T node_type[MAX_NUM_OF_DEVICE];
+   uint16_t wait_time;
+   uint8_t  power_mode;
+   OP_MODE_T op_mode;
+   uint8_t  device_handle;
+} NODE_CONFIG_T;
 
 typedef struct data_temperature16_t {
     uint16_t src1;
@@ -102,8 +119,15 @@ extern void init_sequence_num(void);
 extern void software_reset(void);
 extern void clear_serial_buf(void);
 
-extern uint16_t get_compute_wait_time(void);
-extern void     set_compute_wait_time(uint16_t wait_time);
+extern void get_compute_wait_time(uint16_t* wait_time);
+extern void set_compute_wait_time(const uint16_t wait_time);
+extern void get_compute_op_mode(OP_MODE_T* op_mode);
+extern void set_compute_op_mode(const OP_MODE_T op_mode);
+extern RESULT_T set_sensor_node_config(const NODE_CONFIG_T* data);
+extern RESULT_T get_sensor_node_config(NODE_CONFIG_T* data);
+
+extern void ecofishy_config_parse(const char* config);
+
 
 #ifdef __cplusplus
 }

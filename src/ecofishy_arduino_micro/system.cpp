@@ -13,14 +13,18 @@
 static OP_STATE_T s_op_state = OP_STATE_DEFAULT; 
 static uint16_t   s_err_code = (uint16_t)0x00;
 static uint8_t    s_seq_num  = (uint8_t)0;
-static NODE_CONFIG_T s_node_config;
-static uint16_t s_compute_wait_time = (uint16_t)DEFAULT_COMP_WAIT_TIME;
+static NODE_CONFIG_T s_node_config = {
+    {0,0,0,0,0},
+    DEFAULT_COMP_WAIT_TIME,
+    0,
+    SENSOR_MODE,
+    0
+};
 
 void clear_serial_buf(void)
 {
-    while(Serial.read() >= 0);
-    while(Serial1.read() >= 0);
-
+    while(0 <= Serial.read());
+    while(0 <= Serial1.read());
 }
 
 /*************************************************************************//**
@@ -32,6 +36,7 @@ void sensor_mode(void)
 
   OP_STATE_T op_state = OP_STATE_DEFAULT;
   uint16_t   wait_time = 0;
+  RESULT_T   rc = NG;
 
   // get next state
   op_state = get_next_state();
@@ -50,12 +55,13 @@ void sensor_mode(void)
       led_off(PIN_LED_BLU);
       break;
 
-
   case COMPUTE_WAIT_STATE:
       led_on(PIN_LED_GRN);
       set_next_state(COMPUTE_MEASURE_STATE);
-      wait_time = get_compute_wait_time();
-      if (sleep_bp35a1() == OK) {
+      get_compute_wait_time(&wait_time);
+      Serial.println(wait_time);
+      rc = sleep_bp35a1();
+      if (rc == OK) {
           Serial.println("Sleeping");
       }
       delay(wait_time);
@@ -214,6 +220,9 @@ RESULT_T update_sensor_node_config(void)
 //    Serial.println(str);
 //    myArray = JSON.parse(str);
 
+//    set_compute_wait_time(0,1000);
+//    set_compute_op_mode(0, SENSOR_MODE);
+
     return result;
 }
 
@@ -259,6 +268,7 @@ RESULT_T sleep_bp35a1(void)
     return result;
 
 }
+
 /*************************************************************************//**
  * @brief 
  * 
@@ -311,14 +321,82 @@ void software_reset(void)
 //    while (1) {}
 }
 
-uint16_t get_compute_wait_time(void)
+void get_compute_wait_time(uint16_t* wait_time)
 {
-    return s_compute_wait_time;
+    *wait_time = s_node_config.wait_time;
 }
 
-void set_compute_wait_time(uint16_t wait_time)
+void set_compute_wait_time(const uint16_t wait_time)
 {
-    s_compute_wait_time = wait_time;
+    s_node_config.wait_time = wait_time;
+}
+
+void get_compute_op_mode(OP_MODE_T* op_mode)
+{
+    *op_mode = s_node_config.op_mode;    
+}
+
+void set_compute_op_mode(const OP_MODE_T op_mode)
+{
+    s_node_config.op_mode = op_mode;
+}
+
+
+RESULT_T set_sensor_node_config(const NODE_CONFIG_T* data)
+{
+    RESULT_T result = NG;
+
+    set_compute_wait_time(data->wait_time);
+    set_compute_op_mode(data->op_mode);
+
+    return result;
+}
+
+RESULT_T get_sensor_node_config(NODE_CONFIG_T* data)
+{
+    RESULT_T result = NG;
+
+    get_compute_wait_time(&data->wait_time);
+
+    return result;
+
+}
+
+
+void ecofishy_config_parse(const char* config)
+{
+  JSONVar ecofishy_object = JSON.parse(config);
+
+
+  // JSON.typeof(jsonVar) can be used to get the type of the var
+  if (JSON.typeof(ecofishy_object) == "undefined") {
+    Serial.println("Parsing input failed!");
+    return;
+  }
+
+  Serial.print("JSON.typeof(ecofishy_object) = ");
+  Serial.println(JSON.typeof(ecofishy_object)); // prints: object
+
+  // myObject.hasOwnProperty(key) checks if the object contains an entry for key
+  if (ecofishy_object.hasOwnProperty(STR_COMPUTE_WAIT_TIME)) {
+    Serial.print("ecofishy_object[\"COMPUTE_WAIT_TIME\"] = ");
+
+    Serial.println((int) ecofishy_object[STR_COMPUTE_WAIT_TIME]);
+  }
+
+  if (ecofishy_object.hasOwnProperty(STR_OP_MODE)) {
+    Serial.print("ecofishy_object[\"OP_MODE\"] = ");
+
+    Serial.println((int) ecofishy_object[STR_OP_MODE]);
+  }
+
+
+  // JSON vars can be printed using print or println
+  Serial.print("ecofishy_object = ");
+  Serial.println(ecofishy_object);
+
+  Serial.println();
+
 }
 
 
