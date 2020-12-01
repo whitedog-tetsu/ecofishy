@@ -31,11 +31,14 @@ extern RESULT_T led_off(int led_pin);
 
 extern RESULT_T led_brightness(int led_pin, int brightness);
 
-extern RESULT_T led_blink_msec(int  led_pin, int  pulse_msec);
+extern RESULT_T led_blink_msec(int  led_pin, int  pulse_msec, int repeat_count);
+
 extern RESULT_T led_blink_usec(int  led_pin, int  pulse_usec);
 
 extern void set_led_color(int color);
 extern void get_led_color(int color);
+
+extern RESULT_T judge_led_pin(int led_pin, int lower_range, int upper_range);
 
 
 #ifdef __cplusplus

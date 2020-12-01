@@ -94,9 +94,11 @@ RESULT_T led_off(int led_pin)
 RESULT_T led_brightness(int led_pin, int brightness)
 {    
     RESULT_T result = NG;
+    RESULT_T rc = NG;
 
     // pin
-    if ((PIN_LED_BLU <= led_pin) && (led_pin <= PIN_LED_RED)) {
+    rc = judge_led_pin(led_pin, PIN_LED_BLU, PIN_LED_RED);
+    if (rc == OK) {
         // brightness
         if ((MIN_LED_PWM <= brightness) && (brightness <= MAX_LED_PWM)) {
             analogWrite(led_pin, brightness);
@@ -111,10 +113,65 @@ RESULT_T led_brightness(int led_pin, int brightness)
     return result;
 }
 
-
-RESULT_T led_blink_msec(int  led_pin, int  pulse_msec)
+/*************************************************************************//**
+ * @brief 
+ * 
+ * @param led_pin 
+ * @param lower_range 
+ * @param upper_range
+ * @return RESULT_T 
+ ****************************************************************************/
+RESULT_T judge_led_pin(int led_pin, int lower_range, int upper_range)
 {
-    
+    RESULT_T result = NG;
+
+    if ((lower_range <= led_pin) && (led_pin <= upper_range)) {
+        result = OK;
+    } else {
+        // do nothing
+    }
+    return result;
+}
+
+/*************************************************************************//**
+ * @brief 
+ * 
+ *           ON     OFF
+ *           pulse_time[msec]
+ *          ______     ______
+ *        __|     |____|     |___...
+ *                      
+ *     pulse_time = [10:1000]
+ *     repeat_count = [1:10]
+ * 
+ *     intで扱える数の大きさは処理系による
+ *     ex.
+ *     8bit  255 
+ *     16bit 65535
+ *     32bit 
+ *     64bit 
+ * 
+ * @param led_pin 
+ * @param pulse_msec 
+ * @return RESULT_T 
+ ****************************************************************************/
+RESULT_T led_blink_msec(int  led_pin, int  pulse_msec, int repeat_count)
+{
+    RESULT_T result = NG;
+    // pin
+    if ((PIN_LED_BLU <= led_pin) && (led_pin <= PIN_LED_RED)) {
+        // brightness
+        if ((MIN_LED_PWM <= brightness) && (brightness <= MAX_LED_PWM)) {
+            analogWrite(led_pin, brightness);
+            result = OK;
+        } else {
+            // do nothing
+        }
+    } else {
+        // do nothing
+    }
+
+    return result;
 }
 
 RESULT_T led_blink_usec(int  led_pin, int  pulse_usec)

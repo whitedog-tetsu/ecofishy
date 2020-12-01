@@ -192,3 +192,78 @@ TEST_F(LED_lib, led_brightness_pin16)
 {   
     EXPECT_EQ(NG, led_brightness(11 , 256));
 }
+
+TEST_F(LED_lib, judge_led_pin1)
+{   
+    EXPECT_EQ(OK, judge_led_pin(9, PIN_LED_BLU, PIN_LED_RED));
+}
+
+TEST_F(LED_lib, judge_led_pin2)
+{   
+    EXPECT_EQ(OK, judge_led_pin(11, PIN_LED_BLU, PIN_LED_RED));
+}
+
+TEST_F(LED_lib, judge_led_pin3)
+{   
+    EXPECT_EQ(NG, judge_led_pin(8, PIN_LED_BLU, PIN_LED_RED));
+}
+
+TEST_F(LED_lib, judge_led_pin4)
+{   
+    EXPECT_EQ(NG, judge_led_pin(12, PIN_LED_BLU, PIN_LED_RED));
+}
+
+
+
+/*************************************************************************//**
+ * @brief Construct a new test f object
+ * 
+ * 
+ *  pin
+ *     OK case
+ *     pin     pulse_time     repeat     EXPECT
+ *     9        10             1          OK
+ *     11       10             1          OK
+ * 
+ *     NG case
+ *     pin     pulse_time     repeat     EXPECT
+ *     8        10             1          NG
+ *     12       10             1          NG
+ *     
+ * 
+ * 
+ * 
+ ****************************************************************************/
+
+TEST_F(LED_lib, led_brightness_pin1)
+{   
+    EXPECT_EQ(OK, led_brightness(9 , 1000 , 1 ));
+}
+
+TEST_F(LED_lib, led_brightness_pin2)
+{   
+    EXPECT_EQ(NG, led_brightness(9 , 9 , 1 ));
+}
+
+TEST_F(LED_lib, led_brightness_pin3)
+{   
+    EXPECT_EQ(NG, led_brightness(9 , 1001 , 1 ));
+}
+
+
+TEST_F(LED_lib, led_brightness_pin4)
+{   
+    EXPECT_EQ(OK, led_brightness(9 , 10 , 10 ));
+}
+
+
+TEST_F(LED_lib, led_brightness_pin5)
+{   
+    EXPECT_EQ(NG, led_brightness(9 , 10 , 0 ));
+}
+
+TEST_F(LED_lib, led_brightness_pin6)
+{   
+    EXPECT_EQ(NG, led_brightness(9 , 10 , 11 ));
+}
+
