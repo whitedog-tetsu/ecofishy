@@ -127,6 +127,7 @@ extern RESULT_T set_sensor_node_config(const NODE_CONFIG_T* data);
 extern RESULT_T get_sensor_node_config(NODE_CONFIG_T* data);
 
 extern void ecofishy_config_parse(const char* config);
+//extern void ecofishy_config_parse_str(const String& config);
 
 
 #ifdef __cplusplus

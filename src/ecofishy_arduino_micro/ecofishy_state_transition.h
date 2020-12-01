@@ -44,7 +44,7 @@ extern void init_state(OP_STATE_T state);
 extern void compute_init_state(OP_STATE_T state);
 
 
-extern void send_char(char* buf);
+extern void send_char(const char* buf);
 extern void send_ready(void);
 extern RESULT_T wait_char(char* packet, uint16_t time_msec);
 
@@ -53,7 +53,7 @@ extern void compute_measure_temperature(MEASURE_TEMPER_T* data);
 extern void round_temper_data(int32_t* data, int32_t digit);
 extern RESULT_T start_compute_measure_state(void);
 extern RESULT_T end_compute_measure_state(void);
-extern RESULT_T search_dest_node(char* buf);
+extern RESULT_T search_dest_node(void);
 
 
 

@@ -59,7 +59,6 @@ void sensor_mode(void)
       led_on(PIN_LED_GRN);
       set_next_state(COMPUTE_MEASURE_STATE);
       get_compute_wait_time(&wait_time);
-      Serial.println(wait_time);
       rc = sleep_bp35a1();
       if (rc == OK) {
           Serial.println("Sleeping");
@@ -196,7 +195,7 @@ RESULT_T inquire_sensor_node_config(void)
 
     // request config
 //    send_char("REQCONFIG");
-
+    
 
     return result;
 }
@@ -210,18 +209,7 @@ RESULT_T inquire_sensor_node_config(void)
 RESULT_T update_sensor_node_config(void)
 {
     RESULT_T result = OK;
-//    boolean  rc = false;
-//    String   str;
     char     buf[10] = {'\0'};
-//    JSONVar  myArray;
-
-//    Serial1.setTimeout(3000);
-//    str = Serial1.readStringUntil("\n");
-//    Serial.println(str);
-//    myArray = JSON.parse(str);
-
-//    set_compute_wait_time(0,1000);
-//    set_compute_op_mode(0, SENSOR_MODE);
 
     return result;
 }
@@ -399,7 +387,44 @@ void ecofishy_config_parse(const char* config)
 
 }
 
+#if 0
+void ecofishy_config_parse_str(const String& config)
+{
 
+  JSONVar ecofishy_object = JSON.parse(config);
+
+
+  // JSON.typeof(jsonVar) can be used to get the type of the var
+  if (JSON.typeof(ecofishy_object) == "undefined") {
+    Serial.println("Parsing input failed!");
+    return;
+  }
+
+  Serial.print("JSON.typeof(ecofishy_object) = ");
+  Serial.println(JSON.typeof(ecofishy_object)); // prints: object
+
+  // myObject.hasOwnProperty(key) checks if the object contains an entry for key
+  if (ecofishy_object.hasOwnProperty(STR_COMPUTE_WAIT_TIME)) {
+    Serial.print("ecofishy_object[\"COMPUTE_WAIT_TIME\"] = ");
+
+    Serial.println((int) ecofishy_object[STR_COMPUTE_WAIT_TIME]);
+  }
+
+  if (ecofishy_object.hasOwnProperty(STR_OP_MODE)) {
+    Serial.print("ecofishy_object[\"OP_MODE\"] = ");
+
+    Serial.println((int) ecofishy_object[STR_OP_MODE]);
+  }
+
+
+  // JSON vars can be printed using print or println
+  Serial.print("ecofishy_object = ");
+  Serial.println(ecofishy_object);
+
+  Serial.println();
+    
+}
+#endif
 // get_data
 // set_data
 // interrupt

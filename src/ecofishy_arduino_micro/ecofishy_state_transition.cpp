@@ -31,7 +31,7 @@
 
 void init_state(OP_STATE_T state)
 {
-    boolean rc = false;
+    RESULT_T rc = NG;
     char readByte[256]={'\0'};
     char buf[64] = {'\0'};
     char ipv6_addr[IPV6_ADDR_LEN] = {'\0'};
@@ -43,10 +43,7 @@ void init_state(OP_STATE_T state)
 
     // set last state
     set_last_state(state);
-    
-    // set compute wait time
-    set_compute_wait_time(1000);
-    
+      
     // clear serial buffer
     clear_serial_buf();
     
@@ -66,7 +63,15 @@ void init_state(OP_STATE_T state)
     clear_serial_buf();
 
     // search destination address
-    rc = search_dest_node(readByte);
+    rc = search_dest_node();
+    while(rc == NG) {
+        // reset BP35A1
+        BP35A1_reset(readByte, &readByteSize);
+        clear_serial_buf();
+        Serial.println("Connection failed");
+        rc = search_dest_node();
+    }
+    Serial.println("Connection succeeded");
 
 
     clear_serial_buf();
@@ -224,7 +229,7 @@ RESULT_T wait_char(char* buf, uint16_t time_msec)
  * 
  * @param buf 
  ****************************************************************************/
-void send_char(char* buf)
+void send_char(const char* buf)
 {
     PACKET_T packet = {{'\0'}, (uint8_t)0};
     char payload[PAYLOAD_LEN] = {'\0'};
@@ -405,10 +410,9 @@ void round_temper_data(int32_t* data, int32_t digit)
  * @param readByte 
  * @return RESULT_T 
  ****************************************************************************/
-RESULT_T search_dest_node(char* readByte)
+RESULT_T search_dest_node(void)
 {
-    boolean  rc = false;
-    RESULT_T ret = NG;
+    RESULT_T ret = OK;
     String str_skscan       = {"\0"};  // SKSCAN  
     String str_ok           = {"\0"};  // OK
     String str_event_20     = {"\0"};  // EVENT 20
@@ -442,6 +446,15 @@ RESULT_T search_dest_node(char* readByte)
     Serial1.setTimeout(WAIT_TIME_EVENT22);
     str_event_22 = Serial1.readStringUntil('\n');     // EVENT22
     
+
+    if(str_channel.equals("") == true) return NG;
+//    if(str_channel_page.equals("") == false) return NG;
+//    if(str_pan_id.equals("") == false) return NG;
+//    if(str_mac_addr.equals("") == true) return NG;
+//    if(str_lqi.equals("") == false) return NG;
+//    if(str_side.equals("") == false) return NG;
+//    if(str_pair_id.equals("") == false) return NG;
+
     // erase white space
     str_channel.trim(); 
     str_channel_page.trim();
@@ -450,7 +463,7 @@ RESULT_T search_dest_node(char* readByte)
     str_lqi.trim();
     str_side.trim();
     str_pair_id.trim();
-
+    
 
     // channel
     str_channel.toCharArray(buf, str_channel.length()+1);

@@ -10,6 +10,7 @@
 #define SERIAL1_BAUD 9600
 
 long detect_serial_baud_rate(void);
+void recv_config(void);
 
 long baud_rate_set[] = {
   115200,
@@ -24,7 +25,7 @@ long baud_rate_set[] = {
   1200
 };
 
-const char g_config[] = "{\"COMPUTE_WAIT_TIME\":1000, \"OP_MODE\":1}";
+char g_config[] = "{\"COMPUTE_WAIT_TIME\":1000,\"OP_MODE\":1,\"TEMPERATURE_SENSOR\":2,\"HUMID_SENSOR\":0}";
 
 
 /*************************************************************************//**
@@ -33,28 +34,21 @@ const char g_config[] = "{\"COMPUTE_WAIT_TIME\":1000, \"OP_MODE\":1}";
  ****************************************************************************/
 void setup() {
 
-  bool rc = true;
-  long baud_rate = 0;
   // put your setup code here, to run once:
   Serial.begin(SERIAL0_BAUD);
 
-//  baud_rate = detect_serial_baud_rate();
   Serial1.begin(SERIAL1_BAUD);
-//  while (!Serial1) {
-//    ; // wait for serial port to connect. Needed for native USB port only
-//  }
 
   // prints title with ending line break
   // setup pins
-//  pin_init_setup();
+  pin_init_setup();
   delay(2000);
 
-  ecofishy_config_parse(g_config);
-
-//  led_init();
   
-  init_state(INIT_STATE);
+//  led_init();
 
+  init_state(INIT_STATE);
+  
   set_next_state(COMPUTE_INIT_STATE);
 
 }
@@ -73,12 +67,12 @@ void loop() {
   // host mode
   switch (op_mode) {
   case HOST_MODE:
+    host_mode();
     break;
 
   case SENSOR_MODE:
     // sensor node mode
     sensor_mode();
-
     break;
   
   default:
@@ -109,4 +103,29 @@ long detect_serial_baud_rate(void)
     }
 
     return ret;
+}
+
+
+
+void recv_config(void)
+{
+    String str;
+    String str_config;
+
+    str = Serial1.readStringUntil("\n");
+    Serial.println(str);
+    
+    Serial.println(str.substring(0,6));
+    Serial.println(str.substring(7,8+39));
+    Serial.println(str.substring(47,47+39));
+    Serial.println(str.substring(87,87+4));
+    Serial.println(str.substring(92,92+4));
+    Serial.println(str.substring(97,97+16));
+    Serial.println(str.substring(114,115));
+    Serial.println(str.substring(116,117));
+    Serial.println(str.substring(118,122));
+    Serial.println(str.substring(123));
+    str_config = str.substring(123);
+    str_config.toCharArray(g_config, 40);
+
 }
