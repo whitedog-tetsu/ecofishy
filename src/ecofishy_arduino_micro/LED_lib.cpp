@@ -160,9 +160,9 @@ RESULT_T led_blink_msec(int  led_pin, int  pulse_msec, int repeat_count)
     RESULT_T result = NG;
     // pin
     if ((PIN_LED_BLU <= led_pin) && (led_pin <= PIN_LED_RED)) {
-        // brightness
-        if ((MIN_LED_PWM <= brightness) && (brightness <= MAX_LED_PWM)) {
-            analogWrite(led_pin, brightness);
+        // pulse_msec
+        if ((MIN_LED_PWM <= pulse_msec) && (pulse_msec <= MAX_LED_PWM)) {
+            analogWrite(led_pin, pulse_msec);
             result = OK;
         } else {
             // do nothing
