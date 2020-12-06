@@ -246,7 +246,7 @@ RESULT_T sleep_bp35a1(void)
     RESULT_T result = OK;
     RESULT_T rc = NG;
     
-    digitalWrite(PIN_BP35A1_WKUP, LOW);
+    digitalWrite(PIN_BP35A1_WKUP, HIGH);
     Serial1.println("SKDSLEEP");
     rc = check_awaken_bp35a1();
     if (rc != NG) {
