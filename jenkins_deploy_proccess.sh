@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SUDO_PWD=user
+SUDO_PWD=$1
 
 echo "jenkins deploy"
 
