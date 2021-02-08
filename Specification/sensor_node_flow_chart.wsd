@@ -1,0 +1,48 @@
+@startuml
+
+title Sensor_Node_Operating_Flow
+start
+partition Initialization {
+    : Initialize pin configuation;
+    : Initialize sensor node system;
+    note right
+      BP35A1 and sensors
+    end note
+    while (is connected to Coordinator?) is (Fail)
+        : Connect;
+    endwhile (Success)
+}
+
+
+partition Compute {
+
+    while (Compute)
+        : Initialize;
+        note right
+          BP35A1 and sensors
+        end note
+
+        while (is updated configuration?) is (Fail)
+            : Update configuration;
+        endwhile (Success or up to Retry)
+
+        : Sampling;
+        : Calculate;
+        : Send Data;
+        : Setup for Low power;
+        note right
+          BP35A1 to sleep
+          sensors low sampling rate
+          Host(Arduino)
+        end note
+
+        while (Wakeup time?) is (No)
+            : Wait;
+        endwhile (Yes)
+
+    endwhile (Reset)
+}
+
+end
+
+@enduml

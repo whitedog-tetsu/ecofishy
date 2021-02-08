@@ -235,35 +235,35 @@ TEST_F(LED_lib, judge_led_pin4)
  * 
  ****************************************************************************/
 
-TEST_F(LED_lib, led_brightness_pin1)
+TEST_F(LED_lib, led_blink1)
 {   
-    EXPECT_EQ(OK, led_brightness(9 , 1000 , 1 ));
+    EXPECT_EQ(OK, led_blink_msec(9 , 1000 , 1 ));
 }
 
-TEST_F(LED_lib, led_brightness_pin2)
+TEST_F(LED_lib, led_blink2)
 {   
-    EXPECT_EQ(NG, led_brightness(9 , 9 , 1 ));
+    EXPECT_EQ(NG, led_blink_msec(9 , 9 , 1 ));
 }
 
-TEST_F(LED_lib, led_brightness_pin3)
+TEST_F(LED_lib, led_blink3)
 {   
-    EXPECT_EQ(NG, led_brightness(9 , 1001 , 1 ));
-}
-
-
-TEST_F(LED_lib, led_brightness_pin4)
-{   
-    EXPECT_EQ(OK, led_brightness(9 , 10 , 10 ));
+    EXPECT_EQ(NG, led_blink_msec(9 , 1001 , 1 ));
 }
 
 
-TEST_F(LED_lib, led_brightness_pin5)
+TEST_F(LED_lib, led_blink4)
 {   
-    EXPECT_EQ(NG, led_brightness(9 , 10 , 0 ));
+    EXPECT_EQ(OK, led_blink_msec(9 , 10 , 10 ));
 }
 
-TEST_F(LED_lib, led_brightness_pin6)
+
+TEST_F(LED_lib, led_blink5)
 {   
-    EXPECT_EQ(NG, led_brightness(9 , 10 , 11 ));
+    EXPECT_EQ(NG, led_blink_msec(9 , 10 , 0 ));
+}
+
+TEST_F(LED_lib, led_blink6)
+{   
+    EXPECT_EQ(NG, led_blink_msec(9 , 10 , 11 ));
 }
 

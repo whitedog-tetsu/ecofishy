@@ -1,0 +1,87 @@
+@startuml
+
+
+
+class user_selectable_parameter{
+    String channel
+    String auth_password
+    String node_role
+    int measure_period_time
+}
+
+
+class system {
+    String alert
+    String system_status
+    int measure_data
+}
+
+class bp35a1 {
+  -  String fw_ver
+  -  String ipv6_addr
+  -  String mac_addr
+  -  String pan_id
+  -  String channel
+  -  String auth_password
+  -  int    data
+
+  - void get_fw_ver(char* fw_ver)
+  - void get_ipv6_addr(char* ipv6_addr)
+  - void get_mac_addr(char* mac_addr)
+  - void get_pan_id(char* pan_id)
+  - void get_channel(char* chan)
+  - void get_auth_pswd()
+  - void set_auth_pswd()
+  - void send_data(char* data)
+  - void recieve_data(char* data)
+}
+
+
+class sensor {
+    int raw_data
+    int filtered_data
+    int unit_conveted_data
+    unsigned int sensor_type
+    unsigned int sensor_status
+}
+
+class AT103-11 {
+    int raw_data
+    int convert_data
+    int resolution
+
+    + void get_raw_data(* data)
+    + void convert_data(* raw_data, * convert_data)
+    + void set_resolution(const res_bit_size)
+    + void get_resolution(* res_bit)
+}
+
+
+class data_alignment {
+    char delim
+    - void trim_data(String in_data, char deliminater, char* out_data)
+}
+
+class payload {
+    - int static s_sequence_num
+    - int s_system_status
+    - char sensing_data
+    - int sensing_data_len
+    + void init_sequence_num(void)
+    + void inc_sequence_num(const int sn_step)
+    + void dec_sequence_num(const int sn_step)
+    + int get_sequence_num(void)
+    + void set_sequence_num(int sn)
+    + void set_sending_data(char* data)
+    + void get_sending_data(char* data)
+    + void set_sending_data_len()
+    + void get_sending_data_len()
+
+}
+
+class system_status {
+    int current_state
+    int process_status
+    
+}
+@enduml

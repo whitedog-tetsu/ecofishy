@@ -1,0 +1,35 @@
+@startuml
+scale 600
+[*] --> Initialize
+state "Initialize (state no. 0x00)" as Initialize 
+Initialize --> Compute : [Success in acknowledge]
+Initialize --> Initialize : [fail to recieve acknowledge]
+
+Initialize : Setup Arduino pins
+Initialize : Reset BP35A1 and sensors
+Initialize : Setup BP35A1 and sensors
+Initialize : Send Initialization Success to Coordinator
+Initialize : Wait Acknowledge from Coordinator
+
+state "Compute (state no. 0x10)" as Compute {
+    [*] --> Compute_Initialization
+    state "Initialization (state no. 0x20)" as Compute_Initialization
+    Compute_Initialization : Inquire configuration
+    Compute_Initialization : Update configuration
+    Compute_Initialization : Count timeout
+    Compute_Initialization --> Compute_Measure : [(10sec <= timeout) Or (complete update configure)]
+    Compute --> Initialize : [software reset by command]
+    state "Measure (state no. 0x30)" as Compute_Measure
+    Compute_Measure --> Compute_Wait : [sent data]
+    Compute_Measure : Sampling
+    Compute_Measure : Calculate
+    Compute_Measure : Send data
+    state "Wait (state no. 0x40)" as Compute_Wait
+    Compute_Wait : Count timer
+    Compute_Wait --> Compute_Initialization : [timer = 700msec]
+}
+
+Compute -down-> [*] : [reset]
+
+
+@enduml

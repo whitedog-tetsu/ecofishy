@@ -1,0 +1,24 @@
+@startuml
+
+start
+
+: ** get temperature in analog **
+value range[0, 1024] @10bit;
+
+partition average_temperature {
+
+    while (add_count <= 100?) is (NO)
+        :sum of temperature;
+    endwhile (add_count == 100)
+
+    : ** divide temperature in analog **
+    average size 100
+    value range[0, 1024];
+}
+
+: ** convert into temperature [degree Celcius] **
+value range[?, ?];
+
+stop
+
+@enduml
