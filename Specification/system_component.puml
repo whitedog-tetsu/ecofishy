@@ -1,0 +1,43 @@
+@startuml
+
+scale 700*400
+
+package "PC app" {
+    interface "UDP" as BP35A1_UDP0
+    interface "UART" as BP35A1_UART0
+    interface "UART" as BP35A1_UART0_1
+    BP35A1_UDP0 -- [BP35A1_DSE]
+    BP35A1_UART0_1 - [BP35A1_DSE]
+    BP35A1_UART0_1 -- [Arduino_0]
+    BP35A1_UART0 - [Arduino_0]
+    BP35A1_UART0 -- [App]
+}
+
+node "Sensor Node1" {
+    interface "UART" as BP35A1_UART1
+    ANALOG_A0_1 - [AT103-11_1] 
+    BP35A1_UART1 -- [BP35A1_STD_1]
+    BP35A1_UDP0 -- [BP35A1_STD_1] : Wi-SUN
+    BP35A1_UART1 - [Arduino_1] 
+    ANALOG_A0_1 -- [Arduino_1]
+}
+
+node "Sensor Node2" {
+    interface "UART" as BP35A1_UART2
+    ANALOG_A0_2 - [AT103-11_2] 
+    BP35A1_UART2 -- [BP35A1_STD_2]
+    BP35A1_UDP0 -- [BP35A1_STD_2] : Wi-SUN
+    BP35A1_UART2 - [Arduino_2] 
+    ANALOG_A0_2 -- [Arduino_2]
+}
+
+node "Sensor NodeN (N <= 32)" {
+    interface "UART" as BP35A1_UARTN
+    ANALOG_A0_N - [AT103-11_N] 
+    BP35A1_UARTN -- [BP35A1_STDN]
+    BP35A1_UDP0 -- [BP35A1_STDN] : Wi-SUN
+    BP35A1_UARTN - [Arduino_N] 
+    ANALOG_A0_N -- [Arduino_N]
+}
+
+@enduml

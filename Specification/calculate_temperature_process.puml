@@ -1,0 +1,18 @@
+@startuml
+
+start
+
+: ** get temperature in analog **
+value range[0, 1024] @10bit;
+
+
+: ** average temperature in analog **
+average size 100
+value range[0, 1024];
+
+: ** convert into temperature [degree Celcius] **
+value range[?, ?];
+
+stop
+
+@enduml

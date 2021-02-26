@@ -1,0 +1,22 @@
+@startuml
+
+Title Sensor Node Operating Timing
+
+concise "SensorNode" as WU
+
+@WU
+0 is Initialize
++100 is Connect
++100 is Compute
++300 is Wait
++700 is Compute
++300 is Wait
++700 is Compute
+@200 <-> @500 : 300msec (calculate and send
+@200 <-> @1200 : 1000msec (update data)
+@1200 <-> @1500 : 300msec (calculate and send)
+@1200 <-> @2200 : 1000msec (update data)
+
+caption : time[msec]
+
+@enduml

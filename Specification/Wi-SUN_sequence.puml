@@ -1,0 +1,72 @@
+@startuml
+
+scale 1000*800
+
+group Connection Initialization
+
+    Coordinator -> Coordinator: "SKSTART"
+    SensorNode -> SensorNode: Wait for timeout 30 seconds
+    SensorNode -> Coordinator: SKSCAN 2 FFFFFFFF 6 0
+    SensorNode -> SensorNode: Wait for "MAC address"
+    Coordinator --> SensorNode: EPANDESC Channel:XX Channel Page:XX ... PairID:XX
+    SensorNode -> SensorNode: Get Coodinator MAC address
+    SensorNode -> SensorNode: SKLL64 Coordinator's MAC address
+    
+
+
+    alt Connection Success case
+
+        Coordinator -> Coordinator: Wait for recieving "Ready"
+        SensorNode -> Coordinator: Send "Ready"
+        SensorNode -> SensorNode: Wait for "Ack"
+        Coordinator --> SensorNode: Reply "Ack"
+
+    else Fail any cases repeating 3 times
+
+        Coordinator -> Coordinator: Wait for recieving data
+        SensorNode -> Coordinator: Send "Ready" until timeout
+        SensorNode -> SensorNode: Wait for "Ack"
+        Coordinator --> SensorNode: Reply "Ack"
+
+    end
+end
+
+group Compute Initialization
+    alt Compute Initialization Success case
+
+        SensorNode -> Coordinator: Inquire configuration data "REQCONFIG"
+        SensorNode --> SensorNode: Wait for configuration data
+        Coordinator --> SensorNode: Reply configuration data
+        SensorNode -> SensorNode: Update configuration
+        SensorNode -> Coordinator: Send complete updating
+        Coordinator --> SensorNode: Reply "Ack"
+        SensorNode -> SensorNode: Wait for "Ack" until timeout
+        Coordinator -> Coordinator: Wait for recieving data
+
+    else Fail to get configuration data
+
+        SensorNode -> Coordinator: Inquire configuration data
+        Coordinator --> SensorNode: Reply configuration data
+
+    else Fail to get update configuration (Invalid configuration value etc)
+
+        SensorNode -> Coordinator: Send NG status 
+        Coordinator --> SensorNode: Reply configuration data
+
+    end
+    
+end
+
+
+group Data Send
+    loop 1min(default) period
+        SensorNode --> Coordinator: Sequence No. + data[16bytes]degC + status
+    end
+end
+
+
+
+
+
+
+@enduml
